@@ -1,0 +1,47 @@
+repos:
+  # @TODO: Version 0.4.0 exits with error 'rev', probably cannot be pulled from the GitLab registry. Check for new versions.
+  # - hooks:
+  #     - id: pre-commit-update
+  #       args:
+  #         - --verbose
+  #   repo: https://gitlab.com/vojko.pribudic.foss/pre-commit-update
+  #   rev: v0.4.0
+  - hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+    repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+  - hooks:
+      - id: ruff
+        args:
+          - --config=pyproject.toml
+          - --fix
+          - --exit-non-zero-on-fix
+        types_or: [python, pyi, jupyter]
+      - id: ruff-format
+        args:
+          - --config=pyproject.toml
+        types_or: [python, pyi, jupyter]
+    repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.6.0
+  - hooks:
+      - id: pylint
+        name: pylint
+        entry: .venv/bin/pylint
+        language: system
+        types: [python]
+        args:
+          - --rcfile=pyproject.toml
+          - --load-plugins=pylint_per_file_ignores
+    repo: local
+  - hooks:
+      - id: pytest-unit-tests
+        name: pytest-unit-tests
+        args: [./tests/unit/]
+        entry: bash -c 'source ./.venv/bin/activate && pytest'
+        language: system
+        pass_filenames: false
+        stages: [commit]
+    repo: local

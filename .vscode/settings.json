@@ -1,6 +1,7 @@
 {
     "autoDocstring.docstringFormat": "numpy",
     "editor.formatOnSave": true,
+    "editor.fontLigatures": true,
     "editor.codeActionsOnSave": {
         "source.organizeImports": "explicit"
     },

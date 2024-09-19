@@ -11,6 +11,14 @@ setup:
 	. .venv/bin/activate
 	.venv/bin/pre-commit install
 
+	curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | \
+	jq -r '.channels.Stable.downloads.chromedriver[] | select(.platform == "linux64") | .url' | \
+	xargs wget -q -O chromedriver-linux64.zip
+
+	unzip -q chromedriver-linux64.zip -d tmp-chromedriver
+	mv tmp-chromedriver/chromedriver-linux64/chromedriver .venv/bin/
+	rm -rf chromedriver-linux64.zip tmp-chromedriver
+
 test:
 	. .venv/bin/activate
 	.venv/bin/pre-commit run --all-files
